@@ -11,12 +11,27 @@
 // Unifrom Buffer
 typedef struct {
     GLuint handle;
-    size_t size;
+    size_t max_size;
     GLuint binding_point;
 } DG3D_UniformBuffer;
 
 int dg3d_uniform_buffer_create(DG3D_UniformBuffer* ubo, size_t size, GLuint binding_point, GLenum usage);
+void dg3d_uniform_buffer_update(DG3D_UniformBuffer* ubo, GLintptr offset, GLsizeiptr size, const void* data);
 void dg3d_uniform_buffer_destroy(DG3D_UniformBuffer* ubo);
+
+//! SSBO and UBO binding points do not collide
+
+///////////////
+// SSBO
+typedef struct {
+    GLuint handle;
+    size_t max_size;
+    GLuint binding_point;
+} DG3D_ShaderStorageBuffer;
+
+int dg3d_ssbo_create(DG3D_ShaderStorageBuffer* ssbo, GLuint binding_point, GLenum usage);
+void dg3d_ssbo_update(DG3D_ShaderStorageBuffer* ssbo, GLintptr offset, GLsizeiptr size, const void* data);
+void dg3d_ssbo_destroy(DG3D_ShaderStorageBuffer* ssbo);
 
 ////////////
 // Shaders
@@ -29,14 +44,16 @@ typedef struct {
     GLuint id;
 } ScreenQuadShader;
 
+typedef struct {
+    GLuint id;
+} LinesShader;
+
 /////////////
-// Renderer   // TODO Get camera out of Renderer
+// Renderer
 typedef struct {
 
     DefaultShader    shader_default;
     ScreenQuadShader shader_screen_quad;
-
-    DG3D_Camera     *camera_current;
 
     DG3D_UniformBuffer ubo_matrices;
 
@@ -57,12 +74,10 @@ typedef struct {
 } DG3D_Renderer;
 
 
-// TODO pass camera directly as parameter update.
-
 int  dg3d_renderer_init(DG3D_Renderer* renderer, int width, int height);
-void dg3d_begin_frame(DG3D_Renderer* renderer);
+void dg3d_begin_frame(DG3D_Renderer* renderer, DG3D_Camera* camera);
 void dg3d_render_cube(DG3D_Renderer* renderer, mat4x4 model, GLuint texture);
-void dg3d_renderer_set_camera(DG3D_Renderer* renderer, DG3D_Camera* camera);
+void dg3d_render_line(DG3D_Renderer* renderer, vec4 color, float* line_segments); // GLETER2D candidate?
 void dg3d_renderer_shutdown(DG3D_Renderer* renderer);
 
 #endif

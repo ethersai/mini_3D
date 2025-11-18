@@ -60,7 +60,6 @@ int dg_init(void)
     vec3 target = {0.0f, 0.0f, 0.0f};
     vec3 up = {0.0f, 1.0f, 0.0f};
     camera_init(&game_state.camera, pos, target, up, 1.0f, (float)fb_w, (float)fb_h, 0.1f, 100.f);
-    dg3d_renderer_set_camera(&game_state.renderer, &game_state.camera);
 
     game_state.tess_shady = shader_program_tess_compile_from_path("shaders/dungen.vert",
         "shaders/dungen.tcs", "shaders/dungen.tes", "shaders/dungen.frag");
@@ -116,15 +115,10 @@ int dg_loop(float dt)
         platform_input_set_cursor_visibility(cursor_visible);
     }
 
-
+#if 0
     platform_input_get_mouse_delta(&dx, &dy);
     platform_log_info("[CURSOR] X:%f, Y:%f", dx, dy);
-
-    // if (platform_input_mouse_moved()) {
-    //     double x, y;
-    //     platform_input_get_cursor_pos(&x, &y);
-    //     platform_log_info("[CURSOR] X:%f, Y:%f", x, y);
-    // }
+#endif
 
     // update.
     GLfloat attrib[] = {(float)sin(dt) * 0.5f, (float)cos(dt) * 0.6f};
@@ -155,7 +149,7 @@ int dg_loop(float dt)
     gle2d_update_time_uniform(dt);
 
     // render.
-    dg3d_begin_frame(&game_state.renderer);
+    dg3d_begin_frame(&game_state.renderer, &game_state.camera);
 
     dg3d_render_cube(&game_state.renderer, model_1, game_state.dirt_tex.id);
     dg3d_render_cube(&game_state.renderer, model_2, game_state.dirt_tex.id);

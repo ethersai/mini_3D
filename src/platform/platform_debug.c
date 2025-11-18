@@ -26,14 +26,23 @@ void debug_gl_enable(void)
 
 void debug_display_information(void)
 {
+    GLint context_flags = 0;
+    glGetIntegerv(GL_CONTEXT_FLAGS, &context_flags);
+    if (glGetError() != GL_NO_ERROR) {
+        fprintf(stderr, "ERROR: No valid OpenGL context!\n");
+        return;
+    }
+
     GLint i1, i2, i3;
     GLint dims[2];
     GLint max_size;
+    GLint max_ubo_size;
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &i1);
     glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &i2);
     glGetIntegerv(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS, &i3);
     glGetIntegerv(GL_MAX_VIEWPORT_DIMS, dims);
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max_size);
+    glGetIntegerv(GL_MAX_UNIFORM_BLOCK_SIZE, &max_ubo_size);
 
     fprintf(stdout, "[OPENGL INFORMATION]\n");
     fprintf(stdout, 
@@ -50,7 +59,8 @@ void debug_display_information(void)
         "MAX_COMBINED_TEXTURE_IMAGE_UNITS: %d\n" 
         "MAX_VERTEX_TEXTURE_IMAGE_UNITS: %d\n"
         "MAX_VIEWPORT_DIMS: W: %d, H: %d\n"
-        "MAX_TEXTURE_SIZE: [%dx%d]\n", i1, i2, i3, dims[0], dims[1], max_size, max_size);
+        "MAX_TEXTURE_SIZE: [%dx%d]\n"
+        "MAX_UNIFORM_BLOCK_SIZE: %d\n", i1, i2, i3, dims[0], dims[1], max_size, max_size, max_ubo_size);
     fflush(stdout);
 }
 

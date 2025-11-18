@@ -7,10 +7,13 @@
 #include <glad/glad.h>
 #include <linmath/linmath.h>
 
-#include "misc/math_misc.h"
+#include "camera.h"
 #include "shader.h"
+#include "misc/math_misc.h"
 
 #define U_BLOCK_MATRICES_BINDING 1 // 0 is for gleter2d
+#define SSBO_LINES_BINDING 0 
+
 
 // Cube with minimal data for displaying textures / using normals.
 static float dg3d_vertex_data[] = {
@@ -168,28 +171,21 @@ int dg3d_renderer_init(DG3D_Renderer* renderer, int width, int height)
 
     renderer->viewport_width = width;
     renderer->viewport_height = height;
-    renderer->camera_current = NULL;
     glViewport(0, 0, width, height); //? To be here or not to be here?
 
     return 0;
 }
 
-void dg3d_renderer_set_camera(DG3D_Renderer* renderer, DG3D_Camera* camera)
-{
-    renderer->camera_current = camera;
-}
 
-void dg3d_begin_frame(DG3D_Renderer* renderer)
+void dg3d_begin_frame(DG3D_Renderer* renderer, DG3D_Camera* camera)
 {
-    assert(renderer->camera_current && "Camera null");
+    assert((renderer && camera) && "Null passed in");
     glEnable(GL_DEPTH_TEST);
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glBindBuffer(GL_UNIFORM_BUFFER, renderer->ubo_matrices.handle);
-    glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(mat4x4), renderer->camera_current->view);
-    glBufferSubData(GL_UNIFORM_BUFFER, sizeof(mat4x4), sizeof(mat4x4), renderer->camera_current->projection);
-    glBindBuffer(GL_UNIFORM_BUFFER, 0);
+    dg3d_uniform_buffer_update(&renderer->ubo_matrices, 0, sizeof(mat4x4), camera->view);
+    dg3d_uniform_buffer_update(&renderer->ubo_matrices, sizeof(mat4x4), sizeof(mat4x4), camera->projection);
 }
 
 void dg3d_render_cube(DG3D_Renderer* renderer, mat4x4 model, GLuint texture)
@@ -210,6 +206,11 @@ void dg3d_render_cube(DG3D_Renderer* renderer, mat4x4 model, GLuint texture)
 
     // 5 Unbind (can be skipped, but for safety and debugging)
     glBindVertexArray(0);
+}
+
+void dg3d_render_line(DG3D_Renderer* renderer, vec4 color, float* line_segments)
+{
+
 }
 
 void dg3d_renderer_shutdown(DG3D_Renderer* renderer)
@@ -249,15 +250,58 @@ int dg3d_uniform_buffer_create(DG3D_UniformBuffer* ubo, size_t size, GLuint bind
     glBindBufferBase(GL_UNIFORM_BUFFER, binding_point, ubo->handle);
 
     ubo->binding_point = binding_point;
-    ubo->size = size;
+    ubo->max_size = size;
 
     return 0;
+}
+
+void dg3d_uniform_buffer_update(DG3D_UniformBuffer* ubo, GLintptr offset, GLsizeiptr size, const void* data)
+{
+    assert((offset + size > ubo->max_size) && "SSBO OVERFLOW!");
+    if (offset + size > ubo->max_size) return;
+
+    glBindBuffer(GL_UNIFORM_BUFFER, ubo->handle);
+    glBufferSubData(GL_UNIFORM_BUFFER, offset, size, data);
+    glBindBuffer(GL_UNIFORM_BUFFER, 0);
 }
 
 void dg3d_uniform_buffer_destroy(DG3D_UniformBuffer* ubo)
 {
     if (!ubo) return;
     glDeleteBuffers(1, &ubo->handle);
+}
+
+/////////
+// SSBO
+
+int dg3d_ssbo_create(DG3D_ShaderStorageBuffer* ssbo, GLsizeiptr size, GLuint binding_point, GLenum usage)
+{
+    glGenBuffers(1, &ssbo->handle);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo->handle);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, size, NULL, usage);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, binding_point, ssbo->handle);
+
+    ssbo->binding_point = binding_point;
+    ssbo->max_size = size;
+
+    return 0;
+}
+
+void dg3d_ssbo_update(DG3D_ShaderStorageBuffer* ssbo, GLintptr offset, GLsizeiptr size, const void* data)
+{
+    assert((offset + size > ssbo->max_size) && "SSBO OVERFLOW!");
+    if (offset + size > ssbo->max_size) return;
+
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssbo->handle);
+    glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, size, data);
+    glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+}
+
+void dg3d_ssbo_destroy(DG3D_ShaderStorageBuffer* ssbo)
+{
+    if (!ssbo) return;
+    glDeleteBuffers(1, &ssbo->handle);
 }
 
 

@@ -127,13 +127,3 @@ void camera_set_clip_planes(DG3D_Camera* cam, float znear, float zfar)
     cam->zfar = zfar;
     mat4x4_perspective(cam->projection, cam->fov, cam->aspect_ratio, cam->znear, cam->zfar);
 }  
-
-void camera_get_projection_matrix(DG3D_Camera* cam, mat4x4 out)
-{
-    mat4x4_dup(cam->projection, out);
-}
-
-void camera_get_view_matrix(DG3D_Camera* cam, mat4x4 out)
-{
-    mat4x4_dup(cam->view, out);
-}
