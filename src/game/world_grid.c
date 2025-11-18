@@ -1,11 +1,9 @@
-#include "world_gird.h"
+#include "world_grid.h"
 
 #include <linmath/linmath.h>
 #include "misc/math_misc.h"
 
 #include <stdint.h>
-
-// My imaginary units? MAYBE AS FUNTION PARAMETER / CASEY?
 
 typedef enum {
     QUADRANT_I,
@@ -13,24 +11,6 @@ typedef enum {
     QUADRANT_III,
     QUADRANT_IV
 } game_world_quadrant;
-
-// grid_3d_position_to_quadrant:
-//         movss   xmm2, DWORD PTR [rdi]
-//         pxor    xmm0, xmm0
-//         movss   xmm1, DWORD PTR [rdi+8]
-//         comiss  xmm2, xmm0
-//         jb      .L12
-//         comiss  xmm1, xmm0
-//         sbb     eax, eax
-//         and     eax, 3
-//         add     eax, 1
-//         ret
-// .L12:
-//         xor     eax, eax
-//         ucomiss xmm1, xmm0
-//         setb    al
-//         add     eax, 2
-//         ret
 
 game_world_quadrant grid_3d_position_to_quadrant(vec3 pos)
 {
@@ -66,35 +46,7 @@ game_world_quadrant grid_3d_position_to_quadrant(vec3 pos) {
     return table[idx];
 }
 
-int grid_3d_position_to_quadrant(float pos[3])
-{
-    float x_axis = pos[0];
-    float z_axis = pos[1];
 
-    if (x_axis >= 0.0f) 
-    {
-        if (z_axis >= 0.0f) return 1;
-        else                return 4;
-    }
-    else 
-    {
-        if (z_axis >= 0.0f) return 2;
-        else                return 3;
-    }
-}
-
-int grid_3d_position_to_quadrant(float pos[3])
-{
-    int result;
-    
-    if (pos[0] >= 0.0f) {
-        result = (pos[2] >= 0.0f) ? 1 : 4;
-    } else {
-        result = (pos[2] >= 0.0f) ? 2 : 3;
-    }
-    
-    return result;
-}
 
 void grid_3d_position_to_sector(const vec3 pos, unsigned int sector_size, vec2 out_sector)
 {

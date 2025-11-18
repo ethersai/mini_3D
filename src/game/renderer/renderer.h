@@ -30,7 +30,7 @@ typedef struct {
 } ScreenQuadShader;
 
 /////////////
-// Renderer
+// Renderer   // TODO Get camera out of Renderer
 typedef struct {
 
     DefaultShader    shader_default;
