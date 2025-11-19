@@ -30,6 +30,7 @@ game_world_quadrant grid_3d_position_to_quadrant(vec3 pos)
     return result;
 }
 
+#if 0 
 game_world_quadrant grid_3d_position_to_quadrant(vec3 pos) {
     // fastest possible assembly?
     int xi = pos[0] < 0;
@@ -45,8 +46,7 @@ game_world_quadrant grid_3d_position_to_quadrant(vec3 pos) {
     
     return table[idx];
 }
-
-
+#endif
 
 void grid_3d_position_to_sector(const vec3 pos, unsigned int sector_size, vec2 out_sector)
 {

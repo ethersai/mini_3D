@@ -2,6 +2,7 @@
 #define DG_RENDERER_H
 
 #include <stddef.h>
+#include <stdint.h>
 #include <linmath/linmath.h>
 
 #include "camera.h"
@@ -34,6 +35,17 @@ typedef struct {
 int dg3d_ssbo_create(DG3D_ShaderStorageBuffer* ssbo, GLsizeiptr size, GLuint binding_point, GLenum usage);
 void dg3d_ssbo_update(DG3D_ShaderStorageBuffer* ssbo, GLintptr offset, GLsizeiptr size, const void* data);
 void dg3d_ssbo_destroy(DG3D_ShaderStorageBuffer* ssbo);
+
+///////////////
+// MESH KINDA
+typedef struct {
+    GLuint   vao;
+    GLuint   vbo;
+    uint32_t vertex_count;
+} DG3D_Mesh;
+
+int dg3d_mesh_create(DG3D_Mesh* mesh, uint32_t vertex_count, GLsizeiptr buf_size, const void* data, GLenum usage);
+void dg3d_mesh_destroy(DG3D_Mesh* mesh);
 
 ////////////
 // Shaders

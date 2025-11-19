@@ -1,6 +1,7 @@
 #include "renderer.h"
 
 #include <stdlib.h>
+#include <stdint.h>
 #include <stddef.h>
 #include <assert.h>
 
@@ -112,7 +113,6 @@ int dg3d_renderer_init(DG3D_Renderer* renderer, int width, int height)
         shader_program_delete(renderer->shader_default.id);
         return 1;
     }
-    //shader_initialize_ubo_binding(renderer->shader_lines.id, "uBlockMatrices", U_BLOCK_MATRICES_BINDING);
 
     // lines shader
     renderer->shader_lines.id = shader_program_compile_from_path("shaders/dg3d_lines.vert", "shaders/dg3d_lines.frag");
@@ -124,6 +124,12 @@ int dg3d_renderer_init(DG3D_Renderer* renderer, int width, int height)
 
     // UBO
     dg3d_uniform_buffer_create(&renderer->ubo_matrices, 2 * sizeof(mat4x4), U_BLOCK_MATRICES_BINDING, GL_STREAM_DRAW);
+
+    // Lines VAO // ! TEST TEST TEST
+
+
+
+    // ! END TEST END TEST
 
     // Screen Quad VAO
     glGenVertexArrays(1, &renderer->screen_quad_vao);
@@ -218,10 +224,10 @@ void dg3d_render_cube(DG3D_Renderer* renderer, mat4x4 model, GLuint texture)
     glBindVertexArray(0);
 }
 
-void dg3d_render_line(DG3D_Renderer* renderer, vec4 color, float* line_segments)
-{
+// void dg3d_render_line(DG3D_Renderer* renderer, vec4 color)
+// {
 
-}
+// }
 
 void dg3d_renderer_shutdown(DG3D_Renderer* renderer)
 {
@@ -248,6 +254,34 @@ void dg3d_renderer_shutdown(DG3D_Renderer* renderer)
     glDeleteFramebuffers(1, &renderer->fbo_main);
     glDeleteRenderbuffers(1, &renderer->fbo_main_renderbuffer);
     glDeleteTextures(1, &renderer->fbo_main);
+}
+
+/////////
+// MESH
+
+int dg3d_mesh_create(DG3D_Mesh* mesh, uint32_t vertex_count, GLsizeiptr buf_size, const void* data, GLenum usage)
+{
+    glGenVertexArrays(1, &mesh->vao);
+    glGenBuffers(1, &mesh->vbo);
+    glBindVertexArray(mesh->vao);
+    glBindBuffer(GL_ARRAY_BUFFER, mesh->vbo);
+    glBufferData(GL_ARRAY_BUFFER, buf_size, data, usage);
+    // TODO some automation.
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, (sizeof(float) * 3), (void*)0);
+    glEnableVertexAttribArray(0);
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    mesh->vertex_count = vertex_count;
+    return 0;
+}
+
+void dg3d_mesh_destroy(DG3D_Mesh* mesh)
+{
+    if (!mesh) return;
+    glDeleteVertexArrays(1, &mesh->vao);
+    glDeleteBuffers(1, &mesh->vbo);
+    mesh->vertex_count = 0;   
 }
 
 ///////////////////
