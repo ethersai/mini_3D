@@ -9,6 +9,7 @@
 #define DG_CHUNK_Y 64
 #define DG_CHUNK_Z 8
 
+float chunk_grid_data[1024*512]; // 2MiB
 
 game_world_quadrant grid_3d_position_to_quadrant(vec3 pos)
 {
@@ -24,9 +25,13 @@ game_world_quadrant grid_3d_position_to_quadrant(vec3 pos)
     }
 }
 
+
+
 int grid_3d_generate_debug_chunk_data(float* data)
 {
-
+    for (int i = 0; i < 10; i++) {
+        
+    }
 }
 
 
