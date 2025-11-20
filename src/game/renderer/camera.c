@@ -56,6 +56,12 @@ void camera_update(DG3D_Camera* cam, float dt)
     if (platform_is_key_down(KEY_D)) {
         vec3_add(direction, direction, (vec3){1.0f, 0.0f, 0.0f});
     }
+    if (platform_is_key_down(KEY_Q)) {
+        vec3_add(direction, direction, (vec3){0.0f, 1.0f, 0.0f});
+    }
+    if (platform_is_key_down(KEY_Z)) {
+        vec3_sub(direction, direction, (vec3){0.0f, 1.0f, 0.0f});
+    }
 
     
     if (vec3_len(direction) > FLT_EPSILON) {

@@ -92,9 +92,13 @@ static float fullscreen_quad[] = {
 
 static float lines_data[] = { 
     0.0, 0.0, 0.0,
-    1.0, 0.0, 0.0,
-    1.0, 0.0, 1.0,
-    0.0, 0.0, 1.0,
+    5.0, 0.0, 0.0,
+    5.0, 0.0, 5.0,
+    0.0, 0.0, 5.0,
+    0.0, 5.0, 0.0,
+    5.0, 5.0, 0.0,
+    5.0, 5.0, 5.0,
+    0.0, 5.0, 5.0,
 };
 
 DG3D_Mesh chunk_debug_lines; // ! GLOBAL
@@ -130,15 +134,14 @@ int dg3d_renderer_init(DG3D_Renderer* renderer, int width, int height)
         return 1;
     }
     renderer->shader_lines.u_color = shader_get_uniform_location(renderer->shader_lines.id, "u_color");
-
+    shader_initialize_ubo_binding(renderer->shader_lines.id, "uBlockMatrices", U_BLOCK_MATRICES_BINDING);
 
     // UBO
     dg3d_uniform_buffer_create(&renderer->ubo_matrices, 2 * sizeof(mat4x4), U_BLOCK_MATRICES_BINDING, GL_STREAM_DRAW);
 
     // Lines VAO // ! TEST TEST TEST
 
-    //dg3d_mesh_create(chunk_debug_lines, 4, sizeof(lines_data), lines_data, GL_STATIC_DRAW);
-
+    dg3d_mesh_create(&chunk_debug_lines, 8, sizeof(lines_data), lines_data, GL_STATIC_DRAW);
 
     // ! END TEST END TEST
 
@@ -235,15 +238,15 @@ void dg3d_render_cube(DG3D_Renderer* renderer, mat4x4 model, GLuint texture)
     glBindVertexArray(0);
 }
 
-// void dg3d_render_mesh(DG3D_Renderer* renderer, DG3D_Mesh* mesh, vec4 color)
-// {
-//     shader_program_bind(renderer->shader_lines.id);
-//     shader_set_uniform_vec4(renderer->shader_lines.id, renderer->shader_lines.u_color, color);
+void dg3d_render_mesh(DG3D_Renderer* renderer, DG3D_Mesh* mesh, vec4 color)
+{
+    shader_program_bind(renderer->shader_lines.id);
+    shader_set_uniform_vec4(renderer->shader_lines.id, renderer->shader_lines.u_color, color);
 
-//     glBindVertexArray(mesh->vao);
-
-//     glDrawArrays(GL_LINES, )
-// }
+    glBindVertexArray(mesh->vao);
+    glDrawArrays(GL_LINES, 0, mesh->vertex_count);
+    glBindVertexArray(0);
+}
 
 // void dg3d_render_line(DG3D_Renderer* renderer, vec4 color)
 // {

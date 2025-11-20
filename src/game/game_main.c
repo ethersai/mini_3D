@@ -61,7 +61,7 @@ int dg_init(void)
     vec3 pos = {0.0f, 0.0f, -5.0f};
     vec3 target = {0.0f, 0.0f, 0.0f};
     vec3 up = {0.0f, 1.0f, 0.0f};
-    camera_init(&game_state.camera, pos, target, up, 1.0f, (float)fb_w, (float)fb_h, 0.1f, 100.f);
+    camera_init(&game_state.camera, pos, target, up, mathm_deg_to_r(70), (float)fb_w, (float)fb_h, 0.1f, 100.f);
 
     game_state.tess_shady = shader_program_tess_compile_from_path("shaders/dungen.vert",
         "shaders/dungen.tcs", "shaders/dungen.tes", "shaders/dungen.frag");
@@ -199,6 +199,8 @@ int dg_loop(float dt)
     dg3d_render_cube(&game_state.renderer, model_7, game_state.dirt_tex.id);
     dg3d_render_cube(&game_state.renderer, model_8, game_state.dirt_tex.id);
 
+
+    dg3d_render_mesh(&game_state.renderer, &chunk_debug_lines, TEXT_COLOR);
 
     // glClearBufferfv(GL_COLOR, 0, (GLfloat[]){0.0f, 0.0f, 0.0f, 1.0f});
     //gle2d_shapes_draw_quad(0, 0, fb_w, fb_h, 0.0f, GLE2D_COLOR_GREEN, 0);
