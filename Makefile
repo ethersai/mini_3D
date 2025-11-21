@@ -35,6 +35,8 @@ dungen: generate_bin
 	src/game/world_gen.c \
 	src/game/renderer/renderer.c \
 	src/game/renderer/camera.c \
+	src/game/renderer/mesh.c \
+	src/game/renderer/mesh_gen.c \
 	src/game/renderer/shader.c \
 	${LDLIBS}
 
