@@ -101,7 +101,9 @@ static float lines_data[] = {
     0.0, 5.0, 5.0,
 };
 
-DG3D_Mesh chunk_debug_lines; // ! GLOBAL
+// ! GLOBAL AREA
+DG3D_Mesh chunk_debug_lines;
+DG3D_Mesh mesh_chunk_debug_grid;
 
 
 /////////////
@@ -142,6 +144,7 @@ int dg3d_renderer_init(DG3D_Renderer* renderer, int width, int height)
     // Lines VAO // ! TEST TEST TEST
 
     dg3d_mesh_create(&chunk_debug_lines, 8, sizeof(lines_data), lines_data, GL_STATIC_DRAW);
+    
 
     // ! END TEST END TEST
 
@@ -236,6 +239,11 @@ void dg3d_render_cube(DG3D_Renderer* renderer, mat4x4 model, GLuint texture)
 
     // 5 Unbind (can be skipped, but for safety and debugging)
     glBindVertexArray(0);
+}
+
+void dg3d_render_debug_lines(DG3D_Renderer* renderer, DG3D_Mesh* mesh, mat4x4 model, vec4 color)
+{
+    (void)model;
 }
 
 void dg3d_render_mesh(DG3D_Renderer* renderer, DG3D_Mesh* mesh, vec4 color)
