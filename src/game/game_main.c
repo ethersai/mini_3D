@@ -84,6 +84,7 @@ int dg_init(void)
         return 1;
     }
 
+
     platform_log_info("w:%d, h:%d", fb_w, fb_h);
 
     glGenVertexArrays(1, &game_state.vao);
