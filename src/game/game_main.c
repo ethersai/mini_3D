@@ -39,7 +39,6 @@ typedef struct {
     DG3D_Renderer renderer;
     DG3D_Camera camera;
     GLE2D_Texture dirt_tex;
-   // DG3D_Mesh mesh_debug_chank;
     DG_Fonts fonts;
 
     GLuint tess_shady;
