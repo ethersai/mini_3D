@@ -9,8 +9,9 @@ layout (std140, binding = 0) uniform uBlockMatrices {
 };
 
 uniform vec4 u_color;
+uniform mat4 u_model;
 
 void main() {
-    gl_Position = projection * view * vec4(aPos, 1.0);
+    gl_Position = projection * view * u_model * vec4(aPos, 1.0);
     out_color = u_color;
 }

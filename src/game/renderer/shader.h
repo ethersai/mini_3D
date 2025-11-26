@@ -10,6 +10,7 @@ GLuint shader_program_tess_compile_from_path(const char* vert_path,
 GLint shader_get_uniform_location(GLuint id, const char* name);
 GLuint shader_get_uniform_block_index(GLuint id, const char* name);
 void shader_set_uniform_vec4(GLuint id, GLint loc, const float* data);
+void shader_set_uniform_mat4(GLuint id, GLint loc, const float* data);
 
 void shader_initialize_ubo_binding(GLuint id, const char* block_name, GLuint binding_point);
 void shader_initialize_texture_binding(GLuint id, const char* texture_name, int texture_unit_index);

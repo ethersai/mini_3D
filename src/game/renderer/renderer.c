@@ -150,6 +150,7 @@ int dg3d_renderer_init(DG3D_Renderer* renderer, int width, int height)
         return 1;
     }
     renderer->shader_lines.u_color = shader_get_uniform_location(renderer->shader_lines.id, "u_color");
+    renderer->shader_lines.u_model = shader_get_uniform_location(renderer->shader_lines.id, "u_model");
     shader_initialize_ubo_binding(renderer->shader_lines.id, "uBlockMatrices", U_BLOCK_MATRICES_BINDING);
 
     // UBO
@@ -254,11 +255,10 @@ void dg3d_render_cube(DG3D_Renderer* renderer, mat4x4 model, GLuint texture)
 
 void dg3d_render_debug_chunk(DG3D_Renderer* renderer, mat4x4 model, vec4 color)
 {
-    (void)model;
-
     shader_program_bind(renderer->shader_lines.id);
     shader_set_uniform_vec4(renderer->shader_lines.id, renderer->shader_lines.u_color, color);
-
+    shader_set_uniform_mat4(renderer->shader_lines.id, renderer->shader_lines.u_model, &model[0][0]);
+        
     glBindVertexArray(renderer->mesh_debug_chank.vao);
     glDrawArrays(GL_LINES, 0, renderer->mesh_debug_chank.vertex_count);
     glBindVertexArray(0);

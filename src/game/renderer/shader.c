@@ -32,6 +32,14 @@ void shader_set_uniform_vec4(GLuint id, GLint loc, const float* data)
     glUniform4fv(loc, 1, data);
 }
 
+void shader_set_uniform_mat4(GLuint id, GLint loc, const float* data)
+{
+    glUseProgram(id);
+    glUniformMatrix4fv(loc, 1, GL_FALSE, data);
+}
+
+
+
 GLuint shader_get_uniform_block_index(GLuint id, const char* name)
 {
     GLuint index = glGetUniformBlockIndex(id, name);

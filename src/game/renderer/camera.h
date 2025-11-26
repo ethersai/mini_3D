@@ -28,7 +28,9 @@ int camera_init(DG3D_Camera* cam, const vec3 pos, const vec3 target, const vec3 
     float fov, float width, float height, float znear, float zfar);
 
 void camera_update(DG3D_Camera* cam, float dt);
+//void camera_get_direction_vector(DG3D_Camera* cam, vec3 out);
 void camera_update_on_screen_resize(DG3D_Camera* cam, float width, float height);
+void camera_process_mouse_movement(DG3D_Camera* cam, float xoffset, float yoffset);
 void camera_set_fov(DG3D_Camera* cam, float fov);
 void camera_set_clip_planes(DG3D_Camera* cam, float znear, float zfar);
 

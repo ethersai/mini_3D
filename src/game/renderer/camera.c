@@ -43,24 +43,38 @@ int camera_init(DG3D_Camera* cam, const vec3 pos, const vec3 target, const vec3 
 
 void camera_update(DG3D_Camera* cam, float dt)
 {
+    // x = cos(yaw) * cos(pitch)
+    // y = sin(yaw) * cos(pitch)
+    // z = sin(pitch) but since y here is the up.
+    vec3 camera_front;
+    camera_front[0] = cos(mathm_deg_to_r(cam->yaw)) * cos(mathm_deg_to_r(cam->pitch));
+    camera_front[1] = sin(mathm_deg_to_r(cam->pitch));
+    camera_front[2] = sin(mathm_deg_to_r(cam->yaw)) * cos(mathm_deg_to_r(cam->pitch));
+    vec3_norm(camera_front, camera_front);
+
+    vec3 world_up = {0.0f, 1.0f, 0.0f};
+    vec3 camera_right;
+    vec3_mul_cross(camera_right, camera_front, world_up);
+    vec3_norm(camera_right, camera_right);
+
     vec3 direction = {0};
     if (platform_is_key_down(KEY_W)) {
-        vec3_sub(direction, direction, (vec3){0.0f, 0.0f, 1.0f});
+        vec3_sub(direction, direction, camera_front);
     }   
     if (platform_is_key_down(KEY_S)) {
-        vec3_add(direction, direction, (vec3){0.0f, 0.0f, 1.0f});
+        vec3_add(direction, direction, camera_front);
     }
     if (platform_is_key_down(KEY_A)) {
-        vec3_sub(direction, direction, (vec3){1.0f, 0.0f, 0.0f});
+        vec3_add(direction, direction, camera_right);
     }
     if (platform_is_key_down(KEY_D)) {
-        vec3_add(direction, direction, (vec3){1.0f, 0.0f, 0.0f});
+        vec3_sub(direction, direction, camera_right);
     }
     if (platform_is_key_down(KEY_Q)) {
-        vec3_add(direction, direction, (vec3){0.0f, 1.0f, 0.0f});
+        vec3_add(direction, direction, world_up);
     }
     if (platform_is_key_down(KEY_Z)) {
-        vec3_sub(direction, direction, (vec3){0.0f, 1.0f, 0.0f});
+        vec3_sub(direction, direction, world_up);
     }
 
     
@@ -82,9 +96,8 @@ void camera_update(DG3D_Camera* cam, float dt)
         cam->mov_velocity[2] = 0.0f;vec3 direction;
     }
 
-    // update cam view matrix;
-    vec3 target;
-    vec3_sub(target, cam->pos, (vec3){0.0f, 0.0f, 1.0f});
+    vec3 target;                
+    vec3_sub(target, cam->pos, camera_front);
     mat4x4_look_at(cam->view, cam->pos, target, cam->up);
 }
 
@@ -107,17 +120,6 @@ void camera_process_mouse_movement(DG3D_Camera* cam, float xoffset, float yoffse
         cam->pitch = 89.0f;
     if (cam->pitch < -89.0f)
         cam->pitch = -89.0f;
-
-    // x = cos(yaw) * cos(pitch)
-    // y = sin(yaw) * cos(pitch)
-    // z = sin(pitch) but since y here is the up.
-    vec3 direction;
-    direction[0] = cos(mathm_deg_to_r(cam->yaw)) * cos(mathm_deg_to_r(cam->pitch));
-    direction[1] = sin(mathm_deg_to_r(cam->pitch));
-    direction[2] = sin(mathm_deg_to_r(cam->yaw)) * cos(mathm_deg_to_r(cam->pitch));
-    vec3_norm(direction, direction);
-    // vec3_dup(g_camera.direction, direction);
-
 }
 
 // in radians!!

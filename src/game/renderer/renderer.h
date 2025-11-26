@@ -51,6 +51,7 @@ typedef struct {
 typedef struct {
     GLuint  id;
     uniform u_color;  
+    uniform u_model;
 } LinesShader;
 
 /////////////

@@ -162,6 +162,12 @@ int dg_loop(float dt)
 #endif
 
     // update.
+
+    double dx, dy;
+    platform_input_get_mouse_delta(&dx, &dy);
+    camera_process_mouse_movement(&game_state.camera, (float)dx, (float)dy);
+    camera_update(&game_state.camera, delta);
+
     GLfloat attrib[] = {(float)sin(dt) * 0.5f, (float)cos(dt) * 0.6f};
     GLfloat color[] = {1.0f, 0.0f, 0.5f, 1.0f};
     glGetAttribLocation(game_state.tess_shady, "offset");
@@ -169,7 +175,6 @@ int dg_loop(float dt)
     glVertexAttrib2fv(0, attrib);
     glVertexAttrib4fv(1, color);
     
-
 
     mat4x4 model_1;
     mat4x4 model_2;
@@ -188,9 +193,7 @@ int dg_loop(float dt)
     mat4x4_translate(model_7, 0.0f, 6.0f, -5.0f);
     mat4x4_translate(model_8, 0.0f, 0.0f, 0.0f);
 
-    
 
-    camera_update(&game_state.camera, delta);
     gle2d_update_time_uniform(dt);
 
     // render.
@@ -216,6 +219,10 @@ int dg_loop(float dt)
     mat4x4 idntyty;
     mat4x4_identity(idntyty);
     dg3d_render_debug_chunk(&game_state.renderer, idntyty, (vec4){r, g, 0.2f, 1.0f});
+   
+    mat4x4 modo;
+    mat4x4_translate(modo, 0.0f, 6.0f, -5.0f);
+    dg3d_render_debug_chunk(&game_state.renderer, modo, (vec4){r, g, 0.2f, 1.0f});
     //dg3d_render_mesh(&game_state.renderer, &chunk_debug_lines, TEXT_COLOR);
 
     // glClearBufferfv(GL_COLOR, 0, (GLfloat[]){0.0f, 0.0f, 0.0f, 1.0f});
