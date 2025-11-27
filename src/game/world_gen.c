@@ -45,33 +45,16 @@ All of these dramatically affect terrain shape, smoothness, variation, and featu
 
 static fnl_state g_noise;
 
-typedef struct {
-
-    int                  seed;
-    float                freq;
-    int                  octaves;
-    float                lacunarity;
-    float                gain;
-
-    fnl_noise_type       noise_type;
-
-    //*CLAUDE was right!
-    // Keep internal/hardcoded:
-
-    // rotation_type_3d - Users won't understand this, just set IMPROVE_XZ_PLANES
-    // fractal_type - Pick FBM for terrain, users don't need to change
-    // weighted_strength - Too technical, default is fine
-    // cellular_* settings - Only if you're using cellular noise for specific features
-    // domain_warp_* - Advanced technique, hardcode if you use it
-    
-} WorldGenSettings;
-
-typedef struct {
+static WorldGenSettings wgs = {
+    .seed =       DEFAULT_SEED,
+    .freq =       0.01f,
+    .octaves =    6,
+    .lacunarity = 2.0f,
+    .gain =       0.5f,
+}
 
 
 
-
-} WorldGenContext;
 
 int main(void)
 {
