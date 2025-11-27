@@ -42,7 +42,18 @@ WorldGenConfig wgenconf = {
 
 void world_gen_initialize_noise_gen(WorldGenConfig config)
 {
-
+    noise_state = fnlCreateState();
+    // User should be able to play with those.
+    noise_state.seed         = config.seed;
+    noise_state.noise_type   = config.settings.noise_type;
+    noise_state.fractal_type = config.settings.fractal_type;
+    noise_state.octaves      = config.settings.octaves;
+    noise_state.lacunarity   = config.settings.lacunarity;
+    noise_state.gain         = config.settings.gain;
+    noise_state.frequency    = config.settings.frequency;
+   
+    // Those will be hardcoded (at least for now.)
+    noise_state.rotation_type_3d = FNL_ROTATION_IMPROVE_XZ_PLANES;
 }
 void world_gen_chunk_at(ivec2 chunk_coord)
 {
