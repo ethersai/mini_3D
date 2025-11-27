@@ -166,12 +166,12 @@ int dg_loop(float dt)
     gle2d_update_time_uniform(dt);
     
     // render.
-#if 0
+#if 1
     ivec2 chunk_coord = {0};
     world_grid_pos_to_chunk_coordinate(&game_state.camera.pos[0], chunk_coord);
-    //world_grid_loop_over_chunk_relative_to_origin(chunk_coord);
     printf("[%d, %d]\n", chunk_coord[0], chunk_coord[1]);
 #endif
+
     dg3d_begin_frame(&game_state.renderer, &game_state.camera);
 
     dg3d_render_cube(&game_state.renderer, model_1, game_state.dirt_tex.id);

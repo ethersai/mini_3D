@@ -3,14 +3,15 @@
 #define FNL_IMPL 
 #include "FastNoiseLite/FastNoiseLite.h"
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <math.h>
+#include <stdint.h>
 
 #define DEFAULT_SEED 420
 
 static fnl_state noise_state;
+uint8_t chunk_rd[CHUNK_X][CHUNK_Y][CHUNK_Z]; /*[0,0]*/
+uint8_t chunk_ld[CHUNK_X][CHUNK_Y][CHUNK_Z]; /*[-1,0]*/
+uint8_t chunk_lu[CHUNK_X][CHUNK_Y][CHUNK_Z]; /*[-1, -1]*/
+uint8_t chunk_ru[CHUNK_X][CHUNK_Y][CHUNK_Z]; /*[0, -1]*/ 
 
 const WorldGenSettings PRESETS[WGEN_COUNT] = 
 {
@@ -39,7 +40,14 @@ WorldGenConfig wgenconf = {
     .settings = PRESETS[WGEN_DEFAULT],
 };
 
+void world_gen_initialize_noise_gen(WorldGenConfig config)
+{
 
+}
+void world_gen_chunk_at(ivec2 chunk_coord)
+{
+
+}
 
 
 #if 0

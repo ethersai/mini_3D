@@ -27,7 +27,7 @@ typedef struct {
     WorldGenSettings settings;
 } WorldGenConfig;
 
-uint8_t chunk[CHUNK_X][CHUNK_Y][CHUNK_Z];
+extern uint8_t chunk[CHUNK_X][CHUNK_Y][CHUNK_Z];
 
 #endif
 
