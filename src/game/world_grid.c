@@ -13,9 +13,13 @@ void world_grid_pos_to_chunk_coordinate(vec3 pos, ivec2 chunk_coords)
     chunk_coords[1] = floorf(pos[2] / CHUNK_Z);
 }
 
-void world_grid_chunk_coords_to_grid_bounds_relative_to_origin(ivec2 chunk_coords, vec4 out_coords)
+void world_grid_chunk_coords_to_grid_bounds_relative_to_origin(ivec2 chunk_coords, ivec4 out_coords)
 {
      // [local_x_start, local_z_start, upper_x, upper_z] 
+    out_coords[0] = CHUNK_X * chunk_coords[0]; // local_x    
+    out_coords[1] = CHUNK_Z * chunk_coords[1]; // local_z
+    out_coords[2] = (CHUNK_X * chunk_coords[0]) + CHUNK_X; //upper_x 
+    out_coords[3] = (CHUNK_Z * chunk_coords[1]) + CHUNK_Z; //upper_z
 }
 
 void world_grid_loop_over_chunk_relative_to_origin(ivec2 chunk_coords)

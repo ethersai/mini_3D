@@ -3,8 +3,6 @@
 
 #include <glad/glad.h>
 #include "mesh.h"
-#include "game/world_grid.h"
-// i love software. acies7 [Fri Nov 21 21:01:50].
 
 // precalculated XD
 static float buffer_chunk_vertices[7398];

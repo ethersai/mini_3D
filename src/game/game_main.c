@@ -48,7 +48,6 @@ typedef struct {
 static DG_GameContext game_state = {0};
 
 
-
 int fb_w, fb_h;
 
 
@@ -145,6 +144,8 @@ int dg_loop(float dt)
     glVertexAttrib4fv(1, color);
     
 
+    
+
     mat4x4 model_1;
     mat4x4 model_2;
     mat4x4 model_3;
@@ -169,7 +170,12 @@ int dg_loop(float dt)
 #if 1
     ivec2 chunk_coord = {0};
     world_grid_pos_to_chunk_coordinate(&game_state.camera.pos[0], chunk_coord);
-    printf("[%d, %d]\n", chunk_coord[0], chunk_coord[1]);
+    //printf("[%d, %d]\n", chunk_coord[0], chunk_coord[1]);
+    ivec4 out_chunk_coords = {0};
+    world_grid_chunk_coords_to_grid_bounds_relative_to_origin(chunk_coord, out_chunk_coords);
+
+    printf("%d, %d, %d, %d\n", out_chunk_coords[0], out_chunk_coords[1], out_chunk_coords[2], out_chunk_coords[3]);
+
 #endif
 
     dg3d_begin_frame(&game_state.renderer, &game_state.camera);
