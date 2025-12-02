@@ -1,11 +1,9 @@
 #include "world_grid.h"
 
 #include <linmath/linmath.h>
-#include "misc/math_misc.h"
 
 #include <math.h>
 #include <stdint.h>
-#include <stdio.h>
 
 void world_grid_pos_to_chunk_coordinate(vec3 pos, ivec2 chunk_coords)
 {
@@ -13,7 +11,7 @@ void world_grid_pos_to_chunk_coordinate(vec3 pos, ivec2 chunk_coords)
     chunk_coords[1] = floorf(pos[2] / CHUNK_Z);
 }
 
-void world_grid_chunk_coords_to_grid_bounds_relative_to_origin(ivec2 chunk_coords, ivec4 out_coords)
+void world_grid_chunk_coords_to_world_coords(ivec2 chunk_coords, ivec4 out_coords)
 {
      // [local_x_start, local_z_start, upper_x, upper_z] 
     out_coords[0] = CHUNK_X * chunk_coords[0]; // local_x    
@@ -22,6 +20,7 @@ void world_grid_chunk_coords_to_grid_bounds_relative_to_origin(ivec2 chunk_coord
     out_coords[3] = (CHUNK_Z * chunk_coords[1]) + CHUNK_Z; //upper_z
 }
 
+#if 0
 void world_grid_loop_over_chunk_relative_to_origin(ivec2 chunk_coords)
 {
     int upper_x = (CHUNK_X * chunk_coords[0]) + CHUNK_X;
@@ -35,7 +34,6 @@ void world_grid_loop_over_chunk_relative_to_origin(ivec2 chunk_coords)
     }
 }
 
-#if 0
 game_world_quadrant grid_3d_position_to_quadrant(vec3 pos)
 {
     float x_axis = pos[0];

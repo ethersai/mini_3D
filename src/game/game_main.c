@@ -15,10 +15,9 @@
 #include "renderer/renderer.h"
 #include "renderer/camera.h"
 #include "renderer/shader.h"
-#include "renderer/mesh_gen.h"
 #include "game/world_grid.h"
 #include "misc/math_misc.h"
-#include "world_grid.h"
+#include "game/world_gen.h"
 
 #define TEXT_COLOR (vec4){0.0f, 0.5f, 0.5f, 1.0f}
 
@@ -94,6 +93,9 @@ int dg_init(void)
     platform_log_info("w:%d, h:%d", fb_w, fb_h);
 
     glGenVertexArrays(1, &game_state.vao);
+
+    world_gen_initialize_noise_gen(wgenconf);
+
     return 0;
 }
 
@@ -144,8 +146,6 @@ int dg_loop(float dt)
     glVertexAttrib4fv(1, color);
     
 
-    
-
     mat4x4 model_1;
     mat4x4 model_2;
     mat4x4 model_3;
@@ -170,11 +170,9 @@ int dg_loop(float dt)
 #if 1
     ivec2 chunk_coord = {0};
     world_grid_pos_to_chunk_coordinate(&game_state.camera.pos[0], chunk_coord);
-    //printf("[%d, %d]\n", chunk_coord[0], chunk_coord[1]);
-    ivec4 out_chunk_coords = {0};
-    world_grid_chunk_coords_to_grid_bounds_relative_to_origin(chunk_coord, out_chunk_coords);
+    printf("[%d, %d]\n", chunk_coord[0], chunk_coord[1]);
+    world_gen_chunk_at(chunk_coord);
 
-    printf("%d, %d, %d, %d\n", out_chunk_coords[0], out_chunk_coords[1], out_chunk_coords[2], out_chunk_coords[3]);
 
 #endif
 

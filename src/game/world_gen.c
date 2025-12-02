@@ -56,27 +56,45 @@ void world_gen_initialize_noise_gen(WorldGenConfig config)
     // Those will be hardcoded (at least for now.)
     noise_state.rotation_type_3d = FNL_ROTATION_IMPROVE_XZ_PLANES;
 }
-
+#include <stdio.h>
 void world_gen_chunk_at(ivec2 chunk_coord)
 {
     ivec4 chunk_rel_coord;    
-    world_grid_chunk_coords_to_grid_bounds_relative_to_origin(chunk_coord, chunk_rel_coord);
+    world_grid_chunk_coords_to_world_coords(chunk_coord, chunk_rel_coord);
     int local_x = chunk_rel_coord[0];
     int local_z = chunk_rel_coord[1];
     int upper_x = chunk_rel_coord[2];
     int upper_z = chunk_rel_coord[3];
 
+#if 0
+    for (int i = 0; i < 4; i++) {
+        printf("[%d]\n", chunk_rel_coord[i]);
+    }
+#endif
+
     int height_map[CHUNK_Z][CHUNK_X] = {0};
-    for (; local_z < upper_z; local_z++) {
-        for (; local_x < upper_x; local_x++) {
+    int height_map_z = 0;
+    int height_map_x = 0;
+    for (int z = local_z; z < upper_z; z++) {
+        for (int x = local_x; x < upper_x; x++) {
 
-            float noise_height = fnlGetNoise2D(&noise_state, (FNLfloat)local_x, (FNLfloat)local_z); /*[-1 to 1]*/
-            float normalized_height = (noise_height + 1.0f) * 0.5f; /*[0 to 1 */
+            float noise_height = fnlGetNoise2D(&noise_state, (FNLfloat)x, (FNLfloat)z); /*[-1 to 1]*/
+            float normalized_height = (noise_height + 1.0f) * 0.5f; /*[0 to 1] */
 
-            height_map[local_z][local_x] = (int)floorf(normalized_height * (float)CHUNK_Y);
+            height_map[height_map_z][height_map_x] = (int)floorf(normalized_height * (float)CHUNK_Y);
 
+            height_map_x++;
         }
+        height_map_x = 0;
+        height_map_z++;
     } 
+    
+    for (int i = 0; i < CHUNK_Z; i++) {
+        for (int j = 0; j <CHUNK_X; j++) {
+            printf("[%d] ",  height_map[i][j]);
+        }
+        putchar('\n');
+    }   
     
 
     

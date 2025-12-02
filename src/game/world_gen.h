@@ -28,6 +28,12 @@ typedef struct {
 } WorldGenConfig;
 
 
+extern WorldGenConfig wgenconf;
+
+void world_gen_initialize_noise_gen(WorldGenConfig config);
+void world_gen_chunk_at(ivec2 chunk_coord);
+
+
 #endif
 
 #if 0
