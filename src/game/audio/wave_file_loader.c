@@ -1,3 +1,5 @@
+#include "wave_file_loader.h"
+#include "platform/file_read.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -73,4 +75,25 @@ audio_read_wav_file(const char* path, unsigned short* nChannels, unsigned int* n
 defer:
     if (file) fclose(file);
     return result;
+}
+
+int audio_parse_wav_file_from_memory(unsigned char* data, size_t data_size, WAVFile* wav)
+{
+    return 0;
+}
+
+int audio_load_wav(const char* path, WAVFile* wav)
+{
+    size_t size;
+    unsigned char* raw_data = read_file_binary(path, &size);
+    if (raw_data == NULL) return 1;
+
+    int err = audio_parse_wav_file_from_memory(raw_data, size, wav);
+    
+    if (err) {
+        free() //defere....
+    }
+
+    free(raw_data);
+    return 0;
 }

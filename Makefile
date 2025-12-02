@@ -3,7 +3,7 @@ CC:= gcc
 CPPFLAGS:= -Iinclude -Isrc
 LDFLAGS:= -Llib
 CFLAGS+= -std=c99 -Wall -Wextra -Wno-unused-function -Wno-unused-parameter #-pedantic
-LDLIBS:= -lglfw3 -lcglm -lGL -lX11 -lpthread -lXrandr -lXi -ldl -lm #freetype -lfreetype -lz 
+LDLIBS:= -lglfw3 -lcglm -lGL -lopenal -lstdc++ -lX11 -lpthread -lXrandr -lXi -ldl -lm #freetype -lfreetype -lz 
 BUILD?= debug
 
 ifeq ($(OS),Windows_NT)
@@ -33,6 +33,7 @@ dungen: generate_bin
 	src/game/game_main.c \
 	src/game/world_grid.c \
 	src/game/world_gen.c \
+	src/game/audio/sound_blaster.c \
 	src/game/renderer/renderer.c \
 	src/game/renderer/camera.c \
 	src/game/renderer/mesh.c \

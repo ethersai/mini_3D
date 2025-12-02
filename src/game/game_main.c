@@ -15,9 +15,10 @@
 #include "renderer/renderer.h"
 #include "renderer/camera.h"
 #include "renderer/shader.h"
+#include "game/audio/sound_blaster.h"
 #include "game/world_grid.h"
-#include "misc/math_misc.h"
 #include "game/world_gen.h"
+#include "misc/math_misc.h"
 
 #define TEXT_COLOR (vec4){0.0f, 0.5f, 0.5f, 1.0f}
 
@@ -88,6 +89,8 @@ int dg_init(void)
     if (game_state.dirt_tex.id == 0) {
         return 1;
     }
+    
+    audio_sound_blaster_init();
 
 
     platform_log_info("w:%d, h:%d", fb_w, fb_h);
