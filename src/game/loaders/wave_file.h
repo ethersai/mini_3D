@@ -1,5 +1,5 @@
-#ifndef DG_WAVE_FILE_LOADER_H_
-#define DG_WAVE_FILE_LOADER_H_
+#ifndef DG_WAVE_FILE_H_
+#define DG_WAVE_FILE_H_
 
 #include <stddef.h>
 

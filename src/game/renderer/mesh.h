@@ -17,7 +17,4 @@ int dg3d_mesh_create_chunk_debug(DG3D_Mesh* mesh,
 void dg3d_mesh_destroy_debug_chunk(DG3D_Mesh* mesh);
 
 
-
-
-
 #endif

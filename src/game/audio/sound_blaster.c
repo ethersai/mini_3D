@@ -1,5 +1,4 @@
 #include "sound_blaster.h"
-#include "wave_file_loader.h"
 #include <stdlib.h>
 #include <AL/al.h>
 #include <AL/alc.h>

@@ -1,9 +1,7 @@
-#include "wave_file_loader.h"
-#include "platform/file_read.h"
+#include "wave_file.h"
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
-
 
 #define defer(value) do { result = (value); goto defer; } while (0)
 

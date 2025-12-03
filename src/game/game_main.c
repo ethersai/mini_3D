@@ -59,7 +59,10 @@ int dg_init(void)
 {
     platform_get_framebuffer_size(&fb_w, &fb_h);
 
-    if (gle2d_init()) return 1;
+    if (gle2d_init()) {
+        platform_log_error("GLETER2D init failed!");
+        return 1;
+    }
     gle2d_update_rendering_area(fb_w, fb_h);
 
     if (dg3d_renderer_init(&game_state.renderer, fb_w, fb_h)) {
@@ -67,7 +70,9 @@ int dg_init(void)
         return 1;
     }
 
-    sound_blaster_init();
+    if (sound_blaster_init()) {
+        platform_log_error("Sound blaster init failed!");
+    }
 
     game_state.tess_shady = shader_program_tess_compile_from_path("shaders/dungen.vert",
         "shaders/dungen.tcs", "shaders/dungen.tes", "shaders/dungen.frag");

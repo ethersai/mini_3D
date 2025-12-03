@@ -30,6 +30,7 @@ dungen: generate_bin
 	src/platform/platform_other.c \
 	src/platform/platform_debug.c \
 	src/platform/platform_log.c \
+	src/game/loaders/wave_file.c \
 	src/game/game_main.c \
 	src/game/world_grid.c \
 	src/game/world_gen.c \
