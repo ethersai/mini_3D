@@ -124,7 +124,7 @@ int dg_loop(float dt)
     if (platform_is_key_pressed(KEY_C)) {
         double x, y;
         platform_input_get_cursor_pos(&x, &y);
-        sound_blaster_play_sound(SOUND_PUNCH);
+        sound_blaster_play_sound(SOUND_EXAMPLE);
         platform_log_info("[CURSOR] X:%f, Y:%f", x, y);
     }
 

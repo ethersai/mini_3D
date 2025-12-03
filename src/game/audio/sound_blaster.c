@@ -63,10 +63,8 @@ void sound_blaster_play_sound(SoundID id)
     
     alSourcei(g_test_source, AL_BUFFER, g_sound_buffers[id]);
     alSourcef(g_test_source, AL_GAIN, 0.2f);  // Set volume to 50%
-    alSourcef(g_test_source, AL_PITCH, 2.0f);  // Set volume to 50%
+    alSourcef(g_test_source, AL_PITCH, 2.0f);
     alSourcePlay(g_test_source);
-    
-    // DON'T delete here - let it play!
 }
 
 int sound_blaster_init(void)
