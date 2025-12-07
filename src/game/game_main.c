@@ -174,13 +174,11 @@ int dg_loop(float dt)
     gle2d_update_time_uniform(dt);
     
     // render.
-#if 1
+#if 0
     ivec2 chunk_coord = {0};
     world_grid_pos_to_chunk_coordinate(&game_state.camera.pos[0], chunk_coord);
     printf("[%d, %d]\n", chunk_coord[0], chunk_coord[1]);
     world_gen_chunk_at(chunk_coord);
-
-
 #endif
 
     dg3d_begin_frame(&game_state.renderer, &game_state.camera);

@@ -2,6 +2,7 @@
 
 #include <assert.h>
 #include <float.h>
+#include <stdio.h>
 #include <linmath/linmath.h>
 
 #include "platform/platform_input.h"
@@ -27,6 +28,14 @@ int camera_init(DG3D_Camera* cam, const vec3 pos, const vec3 target, const vec3 
     cam->up[2] = up[2];
 
     cam->aspect_ratio = width / height;
+    
+    // Calculate yaw and pitch from direction
+    vec3 dir; 
+    vec3_sub(dir, cam->pos, cam->target);
+    vec3_norm(dir, dir);
+
+    cam->yaw = mathm_r_to_deg(atan2f(dir[2], dir[0]));
+    cam->pitch = mathm_r_to_deg(asinf(dir[1]));
 
     mat4x4_look_at(cam->view, pos, target, up);
     mat4x4_perspective(cam->projection, fov, cam->aspect_ratio, znear, zfar);
@@ -93,7 +102,7 @@ void camera_update(DG3D_Camera* cam, float dt)
     if (vec3_len(cam->mov_velocity) <= FLT_EPSILON) {
         cam->mov_velocity[0] = 0.0f;
         cam->mov_velocity[1] = 0.0f;
-        cam->mov_velocity[2] = 0.0f;vec3 direction;
+        cam->mov_velocity[2] = 0.0f;
     }
 
     vec3 target;                

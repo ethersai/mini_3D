@@ -18,6 +18,8 @@ char* dice_set_state(char* state)
     return setstate(state);
 }
 
+
+
 int dice_multiple(int count, int sides)
 {
     int total = 0;
